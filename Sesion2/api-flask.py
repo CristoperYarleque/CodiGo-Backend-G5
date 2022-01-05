@@ -1,5 +1,4 @@
 from flask import Flask, request
-from flask_cors import CORS
 # request nos da toda la informacion del cliente
 
 app = Flask(__name__)
