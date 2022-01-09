@@ -45,7 +45,9 @@ SELECT * from personas ORDER BY sexo DESC;
 -- no solo el contenido si no toda su estructura.
 DROP TABLE personas;
 -- eliminar contenido de tabla
-DELETE FROM personas;
+DELETE FROM alumnos_cursos;
+-- cambiar configuracion segura de proteccion sql
+SET SQL_SAFE_UPDATES = true;
 
 CREATE TABLE actividades(
 	id INT PRIMARY KEY UNIQUE AUTO_INCREMENT NOT NULL,
