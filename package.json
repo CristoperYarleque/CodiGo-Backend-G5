@@ -1,0 +1,25 @@
+{
+  "name": "cafeteria",
+  "version": "1.0.0",
+  "description": "backend para cafeteria",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CristoperYarleque/CodiGo-Backend-G5.git"
+  },
+  "keywords": [
+    "express",
+    "nodejs",
+    "prisma"
+  ],
+  "author": "Cristoper Yarleque",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CristoperYarleque/CodiGo-Backend-G5/issues"
+  },
+  "homepage": "https://github.com/CristoperYarleque/CodiGo-Backend-G5#readme"
+}
