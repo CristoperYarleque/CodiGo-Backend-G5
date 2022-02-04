@@ -17,7 +17,7 @@ export class AuthService {
           mensaje_oculto: "Hola soy un mensaje oculto",
         },
         process.env.JWT_SECRET,
-        { expiresIn: 120 }
+        { expiresIn: "4h" }
       );
       return { message: "Si es el usuario", token };
     } else {

@@ -1,10 +1,17 @@
 import { prisma } from "../prisma.js";
 
 export class TipoProductoService {
-  static async crearTipoProducto({ nombreProducto, usuarioId }) {
-    const usuarioEncontrado = await prisma.usuario.findUnique({
-      where: { id: usuarioId },
+  static async crearTipoProducto({ nombre }) {
+    const nuevoTipoProducto = await prisma.tipoProducto.create({
+      data: {
+        nombre,
+      },
     });
-    return { message: "ok" };
+    return { content: nuevoTipoProducto };
+  }
+
+  static async listTipoProducto() {
+    const listaProductos = await prisma.tipoProducto.findMany();
+    return { content: listaProductos };
   }
 }

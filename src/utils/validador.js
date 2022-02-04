@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import { prisma } from "../prisma.js";
 
 export function verificarToken(token) {
   try {
@@ -9,7 +10,7 @@ export function verificarToken(token) {
   }
 }
 
-export function validarUsuario(req, res, next) {
+export async function validarUsuario(req, res, next) {
   if (!req.headers.authorization) {
     return res.status(401).json({
       message: "Se necesita una token para realizar esta solicitud",
@@ -20,7 +21,13 @@ export function validarUsuario(req, res, next) {
   if (resultado instanceof jwt.JsonWebTokenError) {
     return res.status(403).json({
       message: "La token es invalida, intente nuevamente",
+      razon: resultado.message,
     });
   }
+  const usuario = await prisma.usuario.findUnique({
+    where: { id: resultado.id },
+    select: { correo: true, id: true },
+  });
+  req.user = usuario;
   next();
 }
