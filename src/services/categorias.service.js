@@ -1,4 +1,5 @@
 import { Categoria } from "../models/categorias.model.js";
+import fs from "fs";
 
 export class CategoriaService {
   static async crear(data) {
@@ -12,5 +13,17 @@ export class CategoriaService {
   static async devolver() {
     const categorias = await Categoria.find();
     return categorias;
+  }
+  static async eliminar(id) {
+    try {
+      const categoriaEncontrada = await Categoria.findById(id);
+      if (categoriaEncontrada.categoriaImagen) {
+        await fs.promises.unlink(categoriaEncontrada.categoriaImagen);
+      }
+      const categoriaEliminada = await Categoria.findByIdAndDelete(id);
+      return categoriaEliminada;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
