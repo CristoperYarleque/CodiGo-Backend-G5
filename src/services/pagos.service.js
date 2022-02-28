@@ -1,36 +1,52 @@
-import { preferences } from "mercadopago";
+import mercadopago from "mercadopago";
+import { Cliente } from "../models/cliente.model.js";
+import { Producto } from "../models/producto.model.js";
 
 export class PagoService {
-  static async generarPreferenciaDePago() {
+  static async generarPreferenciaDePago({ items, cliente }) {
     try {
-      await preferences.create({
+      const clienteEncontrado = await Cliente.findById(cliente);
+      const productosEncontrados = await Promise.all(
+        items.map(async ({ id, cantidad }) => {
+          const productoEncontrado = await Producto.findById(id);
+          return { item: productoEncontrado, cantidad };
+        })
+      );
+      const itemsMP = productosEncontrados.map(({ item, cantidad }) => ({
+        id: item._id,
+        title: item.nombre,
+        quantity: cantidad,
+        unit_price: +item.precio,
+        currency_id: "PEN",
+      }));
+      const preferencia = await mercadopago.preferences.create({
         payer: {
-          name: "Cristoper",
-          surname: "Yarleque",
+          name: clienteEncontrado.nombre,
+          surname: clienteEncontrado.apellido,
           address: {
-            zip_code: "20000",
-            street_name: "avenida chulucanas",
-            street_number: "141",
+            zip_code: clienteEncontrado.direccion.zip,
+            street_name: clienteEncontrado.direccion.calle,
+            street_number: clienteEncontrado.direccion.numero,
           },
-          email: "caypsaturno@gmail.com",
-          identification: {
-            type: "DNI",
-            number: "48874584",
-          },
+          email: clienteEncontrado.correo,
         },
-        items: [
-          {
-            id: "1234",
-            title: "zapatillas de runing",
-            quantity: 1,
-            unit_price: 115.0,
-            currency_id: "PEN",
-          },
-        ],
+        payment_methods: [],
+        items: itemsMP,
         auto_return: "approved",
+        back_urls: {
+          success: "http://localhost:3000/exito",
+          pending: "http://localhost:3000/pendiente",
+          failure: "http://localhost:3000/fallo",
+        },
       });
+      return {
+        resultado: preferencia,
+      };
     } catch (error) {
       console.log(error);
+      return {
+        error: error.message,
+      };
     }
   }
 }
