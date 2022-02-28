@@ -30,14 +30,31 @@ export class PagoService {
           },
           email: clienteEncontrado.correo,
         },
-        payment_methods: [],
+        payment_methods: {
+          default_installments: 2,
+          installments: 3,
+          excluded_payment_methods: [
+            {
+              id: "diners",
+            },
+            {
+              id: "debvisa",
+            },
+          ],
+          excluded_payment_types: [
+            {
+              id: "atm",
+            },
+          ],
+        },
         items: itemsMP,
         auto_return: "approved",
         back_urls: {
-          success: "http://localhost:3000/exito",
-          pending: "http://localhost:3000/pendiente",
-          failure: "http://localhost:3000/fallo",
+          success: `${process.env.DOMINIO}/exito`,
+          pending: `${process.env.DOMINIO}/pendiente`,
+          failure: `${process.env.DOMINIO}/fallo`,
         },
+        notification_url: `${process.env.DOMINIO}/notificaciones`,
       });
       return {
         resultado: preferencia,
