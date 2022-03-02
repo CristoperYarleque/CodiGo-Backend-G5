@@ -13,6 +13,14 @@ const clienteSchema = new mongoose.Schema({
   nombre: mongoose.Schema.Types.String,
   apellido: mongoose.Schema.Types.String,
   correo: { type: mongoose.Schema.Types.String, unique: true },
+  tipo_documento: {
+    enum: ["DNI", "RUC", "CE", "PASAPORTE"],
+    type: mongoose.Schema.Types.String,
+    default: "DNI",
+  },
+  numero_documento: {
+    type: mongoose.Schema.Types.String,
+  },
   direccion: direccionSchema,
 });
 

@@ -6,6 +6,7 @@ import { categoriaProductoRouter } from "./routes/categoria_producto.routes.js";
 import mercadopago from "mercadopago";
 import { pagoRouter } from "./routes/pago.routes.js";
 import { clienteRouter } from "./routes/cliente.routes.js";
+import { facturacionRouter } from "./routes/facturacion.routes.js";
 
 mercadopago.configure({
   access_token: process.env.ACCESS_TOKEN_MP,
@@ -22,6 +23,7 @@ app.use(categoriaRouter);
 app.use(categoriaProductoRouter);
 app.use(pagoRouter);
 app.use(clienteRouter);
+app.use(facturacionRouter);
 
 app.listen(PORT, async () => {
   console.log(`Servidor corriendo exitosamente en el puerto ${PORT}`);
